@@ -1,58 +1,91 @@
 #:kivy 1.0.9
 
-<MainPage>:
-    orientation: 'vertical'
+
+<StartScreen>:
     BoxLayout:
-        orientation: 'horizontal'
-        Label:
-            text: 'Minha Chave'
-            font_size: 20
-        Label:
-            id: my_key_label
-            text: ''
-            font_size: 20
-    BoxLayout:
-        orientation: 'horizontal'
+        orientation: 'vertical'
         BoxLayout:
             orientation: 'vertical'
-            Camera:
-                id: camera
-                resolution: (640,480)
-                play: True
+            padding: '20px'
+            Label:
+                text: 'URL: IP + Port'
+                font_size: 20
+            TextInput:
+                id: url
+                font_size: 20
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '20px'
             Button:
-                text: 'Capture'
+                text: 'Iniciar nova Conversa'
+                font_size: 20
+                on_press: app.start_new_conversation()
                 size_hint_y: None
-                height: '48dp'
-                on_press: root.send_image()
+                height: '50dp'
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '20px'
+            Button:
+                text: 'Entrar em uma Conversa'
+                font_size: 20
+                size_hint_y: None
+                height: '50dp'
+            TextInput:
+                id: user2_key
+                font_size: 20
+
+
+<ChatScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Minha Chave'
+                font_size: 20
+                text_size: cm(6), cm(4)
+            Label:
+                id: my_key_label
+                text: ''
+                font_size: 20
+                text_size: cm(6), cm(4)
         BoxLayout:
             orientation: 'vertical'
             AsyncImage:
                 id: async_image
                 source: ''
+                width: '200dp'
+                height: '900dp'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'Voltar'
+                size_hint_y: None
+                height: '50dp'
+                on_press: app.back_to_start()
+            Button:
+                text: 'Obter Imagem'
+                size_hint_y: None
+                height: '50dp'
+                on_press: app.get_image()
+            Button:
+                text: 'Tirar Foto'
+                size_hint_y: None
+                height: '50dp'
+                on_press: app.take_picture()
+
+
+<CameraScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: '20px'
-        Label:
-            text: 'URL: IP + Port'
-            font_size: 20
-        TextInput:
-            id: url
-            font_size: 20
-    BoxLayout:
-        orientation: 'vertical'
-        padding: '20px'
-        width: '100px'
+        Camera:
+            id: camera
+            resolution: (640,480)
+            play: True
         Button:
-            text: 'Iniciar nova Conversa'
-            font_size: 20
-            on_press: root.start_new_conversation()
-    BoxLayout:
-        orientation: 'vertical'
-        padding: '20px'
-        Button:
-            text: 'Entrar em uma Conversa'
-            font_size: 20
-        TextInput:
-            id: user2_key
-            font_size: 20
+            text: 'Capture'
+            size_hint_y: None
+            height: '48dp'
+            on_press: app.send_image()
+        
 
