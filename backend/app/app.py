@@ -1,6 +1,5 @@
 from flask import Flask, request, Response, send_file
-from app.images import Images
-from app.keys import Keys
+from app.services import Services
 import json
 
 
@@ -16,61 +15,36 @@ def get_response(data: dict = None, code: int = 200) -> Response:
 
 
 
-@app.route("/new-key", methods=["GET"])
+@app.route("/get-pin-for-user1", methods=["GET"])
 def generate_new_key():
     if request.method == "GET":
-        key = Keys.generate()
-        Keys.register_user1(key)
-        return get_response({"key": key})      
+        pin = Services.get_pin_1()
+        return get_response({"pin": pin})      
 
 
 
-@app.route("/connect-key/<key>", methods=["GET"])
-def connect_key(key: str):
+@app.route("/get-pin-for-user2/<username>", methods=["GET"])
+def connect_key(username: str):
     if request.method == "GET":
-        pair_key = Keys.generate()
-        Keys.register_user2(key, pair_key)
-        return get_response({"key": pair_key})
-      
-
-
-@app.route("/check-connection/<key>", methods=["GET"])
-def check_connection(key: str):
-    if request.method == "GET":
-        if Keys.check_connection(key):
-            return get_response({"connection": True})
-        return get_response({"connection": False})
-
-
-
-@app.route("/list", methods=["GET"])
-def list():
-    if request.method == "GET":
-        return get_response(Keys.find_all())
+        pair_pin = Services.get_pin_2(username)
+        return get_response({"pin": pair_pin})
 
 
 
 @app.route("/send-image", methods=["POST"])
 def send_image():
     if request.method == "POST":
-        key = request.form.get("key")
+        username = request.form.get("username")
         buffer_file = request.files['image']
-        Images.save_image(key, buffer_file)
+        Services.save_image(username, buffer_file)
         return get_response()
 
 
 
-@app.route("/get-image/<key>", methods=["GET"])
-def get_image(key: str):
+@app.route("/get-image/<username>", methods=["GET"])
+def get_image(username: str):
     if request.method == "GET":
-        image_path = Images.get_image(key)
+        image_path = Services.get_image_path(username)
         return send_file(image_path, "image/jpg")
 
 
-
-@app.route("/check-image/<key>", methods=["GET"])
-def check_image(key: str):
-    if request.method == "GET":
-        if Images.check_change(key):
-            return get_response({"change": True})
-        return get_response({"change": False})
