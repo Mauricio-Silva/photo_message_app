@@ -11,6 +11,11 @@ except ImportError:
 
 
 from app import app
+import os
+
+
+if not os.path.exists("app/static"):
+    os.mkdir("app/static")
 
 
 app.run(host="0.0.0.0", debug=True, port=9700)

@@ -1,1 +1,0 @@
-frontend-> buildozer android debug deploy run logcat | grep python

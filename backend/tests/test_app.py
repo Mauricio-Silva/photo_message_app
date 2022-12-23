@@ -5,11 +5,10 @@ import io
 
 
 GET_HEADERS = {"Content-Type": "application/json"}
-# BASE_URL = "http://10.8.38.232:9700"
 BASE_URL = "http://172.30.30.107:9700"
 DATA = {
-    "user1-key": "",
-    "user2-key": "",
+    "username1": "",
+    "username2": "",
 }
 
 def get_request(suffix: str):
@@ -17,49 +16,29 @@ def get_request(suffix: str):
 
 
 
-def test_generate_new_key():
+def test_get_username1():
     global DATA
-    request = get_request("new-key")
-    key1 = dict(request.json()).get("key")
+    request = get_request("get-username1")
+    username = dict(request.json()).get("username")
     assert request.status_code == 200
-    assert key1 != None
-    assert isinstance(key1, str)
-    assert len(key1) == 5
-    DATA["user1-key"] = key1
+    assert username != None
+    DATA["username1"] = username
 
 
-def test_connect_key():
+def test_get_username2():
     global DATA
-    key1 = DATA["user1-key"]
-    request = get_request(f"connect-key/{key1}")
-    key2 = dict(request.json()).get("key")
+    username1 = DATA["username1"]
+    request = get_request(f"get-username2/{username1}")
+    username2 = dict(request.json()).get("username")
     assert request.status_code == 200
-    assert key2 != None
-    assert isinstance(key2, str)
-    assert len(key2) == 5
-    DATA["user2-key"] = key2
-
-
-def test_check_connection():
-    global DATA
-    key1 = DATA["user1-key"]
-    key2 = DATA["user2-key"]
-    request = get_request(f"check-connection/{key1}")
-    connection = dict(request.json()).get("connection")
-    assert request.status_code == 200
-    assert connection != None
-    assert isinstance(connection, bool)
-    request = get_request(f"check-connection/{key2}")
-    connection = dict(request.json()).get("connection")
-    assert request.status_code == 200
-    assert connection != None
-    assert isinstance(connection, bool)
+    assert username2 != None
+    DATA["username2"] = username2
 
 
 def test_send_image():
     global DATA
-    key1 = DATA["user1-key"]
-    data = {"key": key1}
+    username1 = DATA["username1"]
+    data = {"username": username1}
     with open("tests/city.jpeg","rb") as file:
         image = file.read()
     files = {"image": image}
@@ -69,8 +48,8 @@ def test_send_image():
 
 def test_get_image():
     global DATA
-    key2 = DATA["user2-key"]
-    request = get_request(f"get-image/{key2}")
+    username2 = DATA["username2"]
+    request = get_request(f"get-image/{username2}")
     assert len(request.content) > 0
     assert request.status_code == 200
     try:
@@ -78,11 +57,4 @@ def test_get_image():
     except Exception as exc:
         pytest.fail(exc, pytrace=True)
 
-
-def test_check_image():
-    global DATA
-    key2 = DATA["user2-key"]
-    request = get_request(f"check-image/{key2}")
-    assert request.status_code == 200
-    assert not dict(request.json()).get("change")
 

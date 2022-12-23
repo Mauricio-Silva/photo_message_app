@@ -10,14 +10,13 @@ class Services:
 
 
     @staticmethod
-    def get_pin_1() -> str:
+    def get_username1() -> str:
         return f"user1@{str(uuid.uuid4()).upper()[0:5]}"
 
 
     @staticmethod
-    def get_pin_2(username: str) -> str:
-        start = username.find("@") + 1
-        return f"user2@{username[start:]}"
+    def get_username2(pin: str) -> str:
+        return f"user2@{pin}"
 
 
     @classmethod
@@ -27,7 +26,7 @@ class Services:
 
 
     @classmethod
-    def get_pin(cls, username: str) -> str:
+    def get_username(cls, username: str) -> str:
         index = username.find("@") - 1
         number = username[index:index+1]
         if number == "1": 
@@ -37,8 +36,8 @@ class Services:
 
     @classmethod
     def get_image_path(cls, username: str) -> str:
-        pair_username = cls.get_pin(username)
-        return f"{cls.PATH}/{pair_username}.jpg"
+        pair_username = cls.get_username(username)
+        return f"static/{pair_username}.jpg"
     
 
 

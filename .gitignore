@@ -2,8 +2,6 @@
 
 **/.venv
 
-**/images/
-**/static/
 
 **/.pytest_cache
 

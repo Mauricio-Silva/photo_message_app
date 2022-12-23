@@ -1,91 +1,169 @@
 #:kivy 1.0.9
 
+#:set NormalFontSize '22sp'
+#:set ButtonHeight '50sp'
+#:set DefaultPadding '30sp', '50sp'
 
 <StartScreen>:
     BoxLayout:
         orientation: 'vertical'
+        padding: DefaultPadding
+        Image:
+            source: 'static/message.png'
+            size: '50sp', '50sp'
+        Label:
+            text: 'Photo Message App'
+            font_size: '30sp'
         BoxLayout:
             orientation: 'vertical'
-            padding: '20px'
             Label:
-                text: 'URL: IP + Port'
-                font_size: 20
+                text: 'Digite o IP'
+                font_size: NormalFontSize
+                font_family: 'arial'
+                text_size: self.size
             TextInput:
-                id: url
-                font_size: 20
+                id: ip
+                font_size: '30sp'
+                multiline: False
+                padding: '10sp', '20sp'
+                hint_text: '172.10.10.107'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'Sair'
+                font_size: NormalFontSize
+                on_press: app.stop()
+                size_hint_y: None
+                height: ButtonHeight
+            Button:
+                text: 'Iniciar'
+                font_size: NormalFontSize
+                on_press: app.go_to_login()
+                size_hint_y: None
+                height: ButtonHeight
+
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: DefaultPadding
+        Image:
+            source: 'static/message.png'
+            size: '50sp', '50sp'
+        Label:
+            text: 'Photo Message App'
+            font_size: '30sp'
         BoxLayout:
             orientation: 'vertical'
-            padding: '20px'
+            padding: '0sp', '0sp', '0sp', '30sp'
             Button:
                 text: 'Iniciar nova Conversa'
-                font_size: 20
-                on_press: app.start_new_conversation()
+                font_size: NormalFontSize
                 size_hint_y: None
-                height: '50dp'
+                height: ButtonHeight
+                on_press: app.start_new_conversation()
         BoxLayout:
             orientation: 'vertical'
-            padding: '20px'
             Button:
                 text: 'Entrar em uma Conversa'
-                font_size: 20
+                font_size: NormalFontSize
                 size_hint_y: None
-                height: '50dp'
+                height: ButtonHeight
+                on_press: app.enter_into_conversation()
             TextInput:
-                id: user2_key
-                font_size: 20
+                id: pin
+                font_size: NormalFontSize
+                multiline: False
+                padding: '10sp', '15sp'
+        BoxLayout:
+            orientation: 'vertical'
+            Button:
+                text: 'Voltar'
+                font_size: NormalFontSize
+                on_press: app.back_to_start()
+                size_hint_y: None
+                height: ButtonHeight
 
 
 <ChatScreen>:
     BoxLayout:
         orientation: 'vertical'
+        padding: DefaultPadding
         BoxLayout:
             orientation: 'horizontal'
             Label:
-                text: 'Minha Chave'
-                font_size: 20
-                text_size: cm(6), cm(4)
+                text: 'Meu PIN'
+                font_size: NormalFontSize
             Label:
-                id: my_key_label
+                id: my_pin
                 text: ''
-                font_size: 20
-                text_size: cm(6), cm(4)
+                font_size: NormalFontSize
         BoxLayout:
             orientation: 'vertical'
             AsyncImage:
-                id: async_image
-                source: ''
-                width: '200dp'
-                height: '900dp'
+                id: other_user_image
+                source: 'static/hourglass.png'
+                size: '300sp', '500sp'
         BoxLayout:
             orientation: 'horizontal'
             Button:
                 text: 'Voltar'
                 size_hint_y: None
-                height: '50dp'
-                on_press: app.back_to_start()
+                height: ButtonHeight
+                on_press: app.back_to_login()
             Button:
                 text: 'Obter Imagem'
                 size_hint_y: None
-                height: '50dp'
+                height: ButtonHeight
                 on_press: app.get_image()
             Button:
                 text: 'Tirar Foto'
                 size_hint_y: None
-                height: '50dp'
-                on_press: app.take_picture()
+                height: ButtonHeight
+                on_press: app.go_to_camera()
+
+
+<PhotoScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: DefaultPadding
+        BoxLayout:
+            orientation: 'vertical'
+            AsyncImage:
+                id: photo
+                source: ''
+                size: '300sp', '500sp'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'Voltar'
+                size_hint_y: None
+                height: ButtonHeight
+                on_press: app.back_to_chat()
+            Button:
+                text: 'Enviar Foto'
+                size_hint_y: None
+                height: ButtonHeight
+                on_press: app.send_image()
+            Button:
+                text: 'Tirar Foto'
+                size_hint_y: None
+                height: ButtonHeight
+                on_press: app.go_to_camera()
 
 
 <CameraScreen>:
     BoxLayout:
         orientation: 'vertical'
+        padding: DefaultPadding
         Camera:
             id: camera
-            resolution: (640,480)
+            resolution: (640, 480)
             play: True
         Button:
             text: 'Capture'
             size_hint_y: None
-            height: '48dp'
-            on_press: app.send_image()
+            height: ButtonHeight
+            on_press: app.take_picture()
         
 

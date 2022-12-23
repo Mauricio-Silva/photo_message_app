@@ -15,19 +15,19 @@ def get_response(data: dict = None, code: int = 200) -> Response:
 
 
 
-@app.route("/get-pin-for-user1", methods=["GET"])
-def generate_new_key():
+@app.route("/get-username1", methods=["GET"])
+def get_username1():
     if request.method == "GET":
-        pin = Services.get_pin_1()
-        return get_response({"pin": pin})      
+        username = Services.get_username1()
+        return get_response({"username": username})      
 
 
 
-@app.route("/get-pin-for-user2/<username>", methods=["GET"])
-def connect_key(username: str):
+@app.route("/get-username2/<pin>", methods=["GET"])
+def get_username2(pin: str):
     if request.method == "GET":
-        pair_pin = Services.get_pin_2(username)
-        return get_response({"pin": pair_pin})
+        pair_username = Services.get_username2(pin)
+        return get_response({"username": pair_username})
 
 
 
@@ -35,7 +35,7 @@ def connect_key(username: str):
 def send_image():
     if request.method == "POST":
         username = request.form.get("username")
-        buffer_file = request.files['image']
+        buffer_file = request.files["image"]
         Services.save_image(username, buffer_file)
         return get_response()
 
